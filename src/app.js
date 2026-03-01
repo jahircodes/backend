@@ -11,7 +11,7 @@ const { createAuthRepository } = require('./modules/auth/auth.repository');
 const { createAuthService } = require('./modules/auth/auth.service');
 const { buildAuthRouter } = require('./modules/auth/auth.routes');
 const { createUserRepository } = require('./modules/user/user.repository');
-const { createUserService } = require('./modules/user/user.service');
+const { buildUserService } = require('./modules/user/user.service');
 const { buildUserRouter } = require('./modules/user/user.routes');
 const { ApiError } = require('./shared/ApiError');
 const { logger } = require('./config/logger');
@@ -24,7 +24,7 @@ const authRepository = createAuthRepository({ prisma });
 const authService = createAuthService({ authRepository });
 const authRoutes = buildAuthRouter({ authService });
 const userRepository = createUserRepository({ prisma });
-const userService = createUserService({ userRepository });
+const userService = buildUserService({ userRepository });
 const userRoutes = buildUserRouter({ userService });
 
 app.use(helmet());

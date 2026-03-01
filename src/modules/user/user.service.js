@@ -1,9 +1,9 @@
 const { ApiError } = require('../../shared/ApiError');
 
-const createUserService = ({ userRepository }) => {
+const buildUserService = ({ userRepository }) => {
   const safeUserSelect = { id: true, email: true, createdAt: true };
 
-  const listUsers = () => userRepository.findMany({}, { select: safeUserSelect });
+  const getAllUsers = () => userRepository.findMany({}, { select: safeUserSelect });
 
   const getUser = async (id) => {
     const user = await userRepository.findById(id, { select: safeUserSelect });
@@ -25,7 +25,7 @@ const createUserService = ({ userRepository }) => {
     return { id };
   };
 
-  return { listUsers, getUser, updateUser, deleteUser };
+  return { getAllUsers, getUser, updateUser, deleteUser };
 };
 
-module.exports = { createUserService };
+module.exports = { buildUserService };

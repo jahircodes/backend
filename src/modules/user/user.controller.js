@@ -2,8 +2,8 @@ const { sendSuccess } = require('../../utils/response');
 const { wrapAsync } = require('../../utils/wrapAsync');
 
 const buildUserController = ({ userService }) => {
-  const listUsers = wrapAsync(async (req, res) => {
-    const users = await userService.listUsers();
+  const getAllUsers = wrapAsync(async (req, res) => {
+    const users = await userService.getAllUsers();
     return sendSuccess(res, users);
   });
 
@@ -22,7 +22,7 @@ const buildUserController = ({ userService }) => {
     return sendSuccess(res, result, 'Deleted');
   });
 
-  return { listUsers, getUser, updateUser, deleteUser };
+  return { getAllUsers, getUser, updateUser, deleteUser };
 };
 
 module.exports = { buildUserController };
