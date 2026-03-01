@@ -1,28 +1,43 @@
 const { sendSuccess } = require('../../utils/response');
-const { wrapAsync } = require('../../utils/wrapAsync');
 
 const buildUserController = ({ userService }) => {
-  const getAllUsers = wrapAsync(async (req, res) => {
-    const users = await userService.getAllUsers();
-    return sendSuccess(res, users);
-  });
+  const getUsers = async (req, res, next) => {
+    try {
+      const users = await userService.getUsers();
+      return sendSuccess(res, users);
+    } catch (err) {
+      next(err);
+    }
+  };
 
-  const getUser = wrapAsync(async (req, res) => {
-    const user = await userService.getUser(req.params.id);
-    return sendSuccess(res, user);
-  });
+  const getUser = async (req, res, next) => {
+    try {
+      const user = await userService.getUser(req.params.id);
+      return sendSuccess(res, user);
+    } catch (err) {
+      next(err);
+    }
+  };
 
-  const updateUser = wrapAsync(async (req, res) => {
-    const user = await userService.updateUser(req.params.id, req.body);
-    return sendSuccess(res, user, 'Updated');
-  });
+  const updateUser = async (req, res, next) => {
+    try {
+      const user = await userService.updateUser(req.params.id, req.body);
+      return sendSuccess(res, user, 'Updated');
+    } catch (err) {
+      next(err);
+    }
+  };
 
-  const deleteUser = wrapAsync(async (req, res) => {
-    const result = await userService.deleteUser(req.params.id);
-    return sendSuccess(res, result, 'Deleted');
-  });
+  const deleteUser = async (req, res, next) => {
+    try {
+      const result = await userService.deleteUser(req.params.id);
+      return sendSuccess(res, result, 'Deleted');
+    } catch (err) {
+      next(err);
+    }
+  };
 
-  return { getAllUsers, getUser, updateUser, deleteUser };
+  return { getUsers, getUser, updateUser, deleteUser };
 };
 
 module.exports = { buildUserController };
