@@ -13,10 +13,11 @@ const loginSchema = Joi.object({
 });
 
 const validate = (schema) => (req, res, next) => {
-  const { error } = schema.validate(req.body);
+  const { error, value } = schema.validate(req.body, { abortEarly: false, stripUnknown: true });
   if (error) {
     return next(new ApiError('Validation failed', 400, error.details));
   }
+  req.body = value;
   return next();
 };
 

@@ -1,16 +1,8 @@
-const jwt = require('jsonwebtoken');
 const { hashPassword, comparePassword } = require('../../utils/hash');
 const { ApiError } = require('../../shared/ApiError');
-const { loadEnv } = require('../../config/env');
+const { buildUserTokenPayload, getDefaultTokenSigner } = require('../../utils/token');
 
-const env = loadEnv();
-
-const buildSignToken = (signingEnv) => (user) =>
-  jwt.sign({ sub: user.id, email: user.email, role: user.role }, signingEnv.JWT_SECRET, {
-    expiresIn: signingEnv.JWT_EXPIRES_IN,
-  });
-
-const createAuthService = ({ authRepository, signToken = buildSignToken(env) }) => {
+const createAuthService = ({ authRepository, signToken = getDefaultTokenSigner() }) => {
   const register = async (payload) => {
     const existing = await authRepository.findByEmail(payload.email);
     if (existing) {
@@ -22,7 +14,8 @@ const createAuthService = ({ authRepository, signToken = buildSignToken(env) }) 
       password: hashed,
       role: payload.role || 'user',
     });
-    return { id: user.id, token: signToken(user) };
+    const token = signToken(buildUserTokenPayload(user));
+    return { id: user.id, role: user.role, token };
   };
 
   const login = async (payload) => {
@@ -34,7 +27,8 @@ const createAuthService = ({ authRepository, signToken = buildSignToken(env) }) 
     if (!match) {
       throw new ApiError('Invalid credentials', 401);
     }
-    return { id: user.id, token: signToken(user) };
+    const token = signToken(buildUserTokenPayload(user));
+    return { id: user.id, role: user.role, token };
   };
 
   return { register, login };

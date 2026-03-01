@@ -1,23 +1,16 @@
 const { sendSuccess } = require('../../utils/response');
+const { wrapAsync } = require('../../utils/wrapAsync');
 
 const buildAuthController = ({ authService }) => {
-  const register = async (req, res, next) => {
-    try {
-      const result = await authService.register(req.body);
-      return sendSuccess(res, result, 'Registered');
-    } catch (err) {
-      return next(err);
-    }
-  };
+  const register = wrapAsync(async (req, res) => {
+    const result = await authService.register(req.body);
+    return sendSuccess(res, result, 'Registered');
+  });
 
-  const login = async (req, res, next) => {
-    try {
-      const result = await authService.login(req.body);
-      return sendSuccess(res, result, 'Logged in');
-    } catch (err) {
-      return next(err);
-    }
-  };
+  const login = wrapAsync(async (req, res) => {
+    const result = await authService.login(req.body);
+    return sendSuccess(res, result, 'Logged in');
+  });
 
   return { register, login };
 };
