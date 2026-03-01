@@ -8,10 +8,10 @@ const { authMiddleware } = require('./middlewares/auth.middleware');
 const { requestIdMiddleware } = require('./middlewares/requestId.middleware');
 const { getPrismaClient } = require('./database/prismaClient');
 const { createAuthRepository } = require('./modules/auth/auth.repository');
-const { buildAuthService } = require('./modules/auth/auth.service');
+const { createAuthService } = require('./modules/auth/auth.service');
 const { buildAuthRouter } = require('./modules/auth/auth.routes');
 const { createUserRepository } = require('./modules/user/user.repository');
-const { buildUserService } = require('./modules/user/user.service');
+const { createUserService } = require('./modules/user/user.service');
 const { buildUserRouter } = require('./modules/user/user.routes');
 const { ApiError } = require('./shared/ApiError');
 const { logger } = require('./config/logger');
@@ -21,10 +21,10 @@ const app = express();
 
 const prisma = getPrismaClient();
 const authRepository = createAuthRepository({ prisma });
-const authService = buildAuthService({ authRepository });
+const authService = createAuthService({ authRepository });
 const authRoutes = buildAuthRouter({ authService });
 const userRepository = createUserRepository({ prisma });
-const userService = buildUserService({ userRepository });
+const userService = createUserService({ userRepository });
 const userRoutes = buildUserRouter({ userService });
 
 app.use(helmet());

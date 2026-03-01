@@ -2,7 +2,7 @@ const { hashPassword, comparePassword } = require('../../utils/hash');
 const { ApiError } = require('../../shared/ApiError');
 const { buildUserTokenPayload, getDefaultTokenSigner } = require('../../utils/token');
 
-const buildAuthService = ({ authRepository, signToken = getDefaultTokenSigner() }) => {
+const createAuthService = ({ authRepository, signToken = getDefaultTokenSigner() }) => {
   const register = async (payload) => {
     const existing = await authRepository.findByEmail(payload.email);
     if (existing) {
@@ -33,4 +33,4 @@ const buildAuthService = ({ authRepository, signToken = getDefaultTokenSigner() 
   return { register, login };
 };
 
-module.exports = { buildAuthService };
+module.exports = { createAuthService };
