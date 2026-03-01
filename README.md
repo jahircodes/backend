@@ -15,7 +15,10 @@ Modular Express backend with auth and user domains, Prisma ORM, and JWT auth.
    ```
 2. Copy env template and adjust values (set `DATABASE_URL` to your MySQL connection string; URL-encode special characters in passwords, e.g. `$` → `%24`: `mysql://user:pa%24s@localhost:3306/app_db`):
    ```sh
+   # macOS/Linux
    cp .env.example .env
+   # Windows (PowerShell)
+   copy .env.example .env
    ```
 3. Generate Prisma client and run migrations (schema lives at `prisma/schema.prisma`):
    ```sh
@@ -45,11 +48,10 @@ src/
    app.js               # Express app wiring and routes
    server.js            # HTTP server bootstrap
    config/
-      constants.js
       env.js
       logger.js
-   database/
-      prismaClient.js
+      database/
+         prismaClient.js
    infrastructure/
       cache/
       queue/
@@ -57,7 +59,6 @@ src/
       auth.middleware.js
       error.middleware.js
       rateLimit.middleware.js
-      rbac.middleware.js
       requestId.middleware.js
    modules/
       auth/
@@ -80,11 +81,13 @@ src/
       hash.js
       response.js
       retry.js
+      token.js
+      wrapAsync.js
 ```
 
 - Core routes: `/api` (welcome), `/api/auth/*`, `/api/users/*` (protected)
-- Middlewares: request ID, rate limit, auth, RBAC, global error handler
-- Utilities: response helpers, hashing, retry wrapper
+- Middlewares: request ID, rate limit, auth, global error handler
+- Utilities: response helpers, hashing, retry wrapper, token helpers
 
 ## Notes
 
