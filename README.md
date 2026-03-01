@@ -110,4 +110,9 @@ package.json
 - `.env` is git-ignored — never commit it.
 - All protected routes require an `Authorization: Bearer <token>` header.
 - Passwords are hashed with bcrypt before storage.
+- HTTP request logging and app logging are unified under **Pino** via `pino-http`. Log level is driven by status code: `info` (2xx), `warn` (4xx), `error` (5xx). Example output:
+  ```
+  INFO: GET /api 200 - 5ms
+  WARN: GET /api/unknown 404 - Route not found - 1ms
+  ```
 - After cloning for a new project: update secrets/DSNs, run `npm install`, then `npm run prisma:generate` and `npm run prisma:migrate -- --name init`.

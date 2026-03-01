@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const morgan = require('morgan');
+const pinoHttp = require('pino-http');
 const { rateLimiter } = require('./middlewares/rateLimit.middleware');
 const { errorHandler } = require('./middlewares/error.middleware');
 const { authMiddleware } = require('./middlewares/auth.middleware');
@@ -35,7 +35,25 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan('dev'));
+app.use(
+  pinoHttp({
+    logger,
+    customLogLevel: (req, res, err) => {
+      if (err || res.statusCode >= 500) return 'error';
+      if (res.statusCode >= 400) return 'warn';
+      return 'info';
+    },
+    customSuccessMessage: (req, res, responseTime) =>
+      `${req.method} ${req.url} ${res.statusCode} - ${responseTime}ms`,
+    customErrorMessage: (req, res, err, responseTime) =>
+      `${req.method} ${req.url} ${res.statusCode} - ${err?.message ?? 'Error'} - ${responseTime}ms`,
+    serializers: {
+      req: () => undefined,
+      res: () => undefined,
+      err: (err) => ({ message: err.message, statusCode: err.statusCode }),
+    },
+  })
+);
 app.use(requestIdMiddleware);
 
 app.use(rateLimiter);
@@ -51,6 +69,6 @@ app.use((req, res, next) => {
   next(new ApiError('Route not found', 404));
 });
 
-app.use(errorHandler(logger));
+app.use(errorHandler());
 
 module.exports = { app };

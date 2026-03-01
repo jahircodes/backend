@@ -30,8 +30,8 @@
     "helmet": "latest",
     "joi": "latest",
     "jsonwebtoken": "latest",
-    "morgan": "latest",
     "pino": "latest",
+    "pino-http": "^11.0.0",
     "pino-pretty": "latest"
   },
   "devDependencies": {
