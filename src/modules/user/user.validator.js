@@ -3,7 +3,6 @@ const { ApiError } = require('../../shared/ApiError');
 
 const updateUserSchema = Joi.object({
   email: Joi.string().email().optional(),
-  role: Joi.string().optional(),
 });
 
 const validate = (schema) => (req, res, next) => {

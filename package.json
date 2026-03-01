@@ -35,6 +35,7 @@
     "pino-pretty": "latest"
   },
   "devDependencies": {
+    "@prisma/config": "latest",
     "eslint": "latest",
     "eslint-config-prettier": "latest",
     "eslint-plugin-import": "latest",

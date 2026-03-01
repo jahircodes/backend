@@ -12,10 +12,9 @@ const createAuthService = ({ authRepository, signToken = getDefaultTokenSigner()
     const user = await authRepository.create({
       email: payload.email,
       password: hashed,
-      role: payload.role || 'user',
     });
     const token = signToken(buildUserTokenPayload(user));
-    return { id: user.id, role: user.role, token };
+    return { id: user.id, token };
   };
 
   const login = async (payload) => {
@@ -28,7 +27,7 @@ const createAuthService = ({ authRepository, signToken = getDefaultTokenSigner()
       throw new ApiError('Invalid credentials', 401);
     }
     const token = signToken(buildUserTokenPayload(user));
-    return { id: user.id, role: user.role, token };
+    return { id: user.id, token };
   };
 
   return { register, login };

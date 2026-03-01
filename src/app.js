@@ -5,7 +5,6 @@ const morgan = require('morgan');
 const { rateLimiter } = require('./middlewares/rateLimit.middleware');
 const { errorHandler } = require('./middlewares/error.middleware');
 const { authMiddleware } = require('./middlewares/auth.middleware');
-const { rbacMiddleware } = require('./middlewares/rbac.middleware');
 const { requestIdMiddleware } = require('./middlewares/requestId.middleware');
 const { getPrismaClient } = require('./database/prismaClient');
 const { createAuthRepository } = require('./modules/auth/auth.repository');
@@ -42,7 +41,7 @@ app.get('/api', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
-app.use('/api/users', authMiddleware, rbacMiddleware(['admin', 'manager', 'user']), userRoutes);
+app.use('/api/users', authMiddleware, userRoutes);
 
 app.use((req, res, next) => {
   next(new ApiError('Route not found', 404));

@@ -4,7 +4,6 @@ const { ApiError } = require('../../shared/ApiError');
 const registerSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().min(8).required(),
-  role: Joi.string().optional(),
 });
 
 const loginSchema = Joi.object({

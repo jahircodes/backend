@@ -1,6 +1,10 @@
 const { PrismaClient } = require('@prisma/client');
+const { loadEnv } = require('../config/env');
 
-const createPrismaClient = () => new PrismaClient();
+const createPrismaClient = () => {
+  const env = loadEnv();
+  return new PrismaClient({ datasourceUrl: env.DATABASE_URL });
+};
 
 // Single shared instance for the app; tests can create isolated clients via createPrismaClient.
 const prisma = createPrismaClient();

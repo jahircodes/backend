@@ -1,7 +1,7 @@
 const { ApiError } = require('../../shared/ApiError');
 
 const createUserService = ({ userRepository }) => {
-  const safeUserSelect = { id: true, email: true, role: true, createdAt: true };
+  const safeUserSelect = { id: true, email: true, createdAt: true };
 
   const list = () => userRepository.findMany({}, { select: safeUserSelect });
 

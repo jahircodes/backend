@@ -9,7 +9,6 @@ const createTokenSigner =
 const buildUserTokenPayload = (user) => ({
   sub: user.id,
   email: user.email,
-  role: user.role,
 });
 
 const getDefaultTokenSigner = () => {
