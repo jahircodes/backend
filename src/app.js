@@ -8,7 +8,7 @@ const { authMiddleware } = require('./middlewares/auth.middleware');
 const { requestIdMiddleware } = require('./middlewares/requestId.middleware');
 const { getPrismaClient } = require('./database/prismaClient');
 const { createAuthRepository } = require('./modules/auth/auth.repository');
-const { createAuthService } = require('./modules/auth/auth.service');
+const { buildAuthService } = require('./modules/auth/auth.service');
 const { buildAuthRouter } = require('./modules/auth/auth.routes');
 const { createUserRepository } = require('./modules/user/user.repository');
 const { buildUserService } = require('./modules/user/user.service');
@@ -21,7 +21,7 @@ const app = express();
 
 const prisma = getPrismaClient();
 const authRepository = createAuthRepository({ prisma });
-const authService = createAuthService({ authRepository });
+const authService = buildAuthService({ authRepository });
 const authRoutes = buildAuthRouter({ authService });
 const userRepository = createUserRepository({ prisma });
 const userService = buildUserService({ userRepository });
