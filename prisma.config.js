@@ -5,10 +5,7 @@ const env = loadEnv();
 
 module.exports = defineConfig({
   schema: './prisma/schema.prisma',
-  datasources: {
-    db: {
-      provider: 'mysql',
-      url: { fromEnvVar: 'DATABASE_URL', value: env.DATABASE_URL },
-    },
+  datasource: {
+    url: env.DATABASE_URL,
   },
 });
